@@ -1,0 +1,260 @@
+
+DROP TABLE customer CASCADE CONSTRAINTS;
+
+DROP TABLE branch CASCADE CONSTRAINTS;
+
+DROP TABLE account CASCADE CONSTRAINTS;
+
+DROP TABLE transaction_details CASCADE CONSTRAINTS;
+
+DROP TABLE loan_details CASCADE CONSTRAINTS;
+
+DROP TABLE atm_card_details CASCADE CONSTRAINTS;
+
+DROP TABLE internet_banking CASCADE CONSTRAINTS;
+
+
+DROP SEQUENCE S1;
+
+DROP SEQUENCE S2;
+
+DROP SEQUENCE S3;
+
+DROP SEQUENCE S4;
+
+DROP SEQUENCE S5;
+
+DROP SEQUENCE S6;
+
+CREATE TABLE customer(
+customer_id VARCHAR2(10),
+first_name VARCHAR2(30) NOT NULL,
+middle_name VARCHAR2(30),
+last_name VARCHAR2(30) NOT NULL,
+customer_city VARCHAR2(15),
+phone_no VARCHAR2(10),
+occupation VARCHAR2(30),
+date_of_birth DATE,
+CONSTRAINT custid_pk PRIMARY KEY (customer_id));
+
+
+CREATE TABLE branch(
+branch_id VARCHAR2(10),
+branch_name VARCHAR2(30) NOT NULL,
+branch_city VARCHAR2(30),
+CONSTRAINT branch_id_pk PRIMARY KEY (branch_id));
+
+
+CREATE TABLE account
+(account_no VARCHAR2(30),
+customer_id VARCHAR2(10),
+branch_id VARCHAR2(10),
+opening_balance number(20),
+opening_date DATE,
+account_type VARCHAR2(25) NOT NULL,
+account_status VARCHAR2(10),
+CONSTRAINT account_no_pk PRIMARY KEY (account_no),
+FOREIGN KEY (customer_id) references customer(customer_id),
+FOREIGN KEY (branch_id) references branch(branch_id));
+
+CREATE TABLE transaction_details(
+transaction_id VARCHAR2(10),
+account_no VARCHAR2(10),
+date_of_transaction DATE,
+medium_of_transaction VARCHAR2(20),
+transaction_type VARCHAR2(20),
+transaction_amount number(10) NOT NULL,
+CONSTRAINT trans_id_pk PRIMARY KEY (transaction_id),
+CONSTRAINT trans_account_no_fk FOREIGN KEY (account_no)
+REFERENCES account (account_no));
+
+CREATE TABLE loan_details
+(customer_id varchar2(10),
+branch_id varchar2(10),
+loan_amount number(20),
+foreign key(customer_id) references customer (customer_id),
+CONSTRAINT chk_loan_amount CHECK (loan_amount < 2000000));
+
+CREATE TABLE atm_card_details(
+card_no number(20),
+expiry_date date NOT NULL,
+cvv_number number(3) NOT NULL,
+account_no varchar2(30),
+CONSTRAINT card_no_pk PRIMARY KEY (card_no),
+CONSTRAINT card_account_no_fk FOREIGN KEY (account_no)
+REFERENCES account (account_no));
+
+CREATE TABLE internet_banking(
+login_id varchar2(10),
+password varchar2(4) NOT NULL,
+customer_id varchar2(10),
+account_type varchar2(25),
+CONSTRAINT ib_login_id_pk PRIMARY KEY (login_id),
+CONSTRAINT ib_cust_id_fk FOREIGN KEY (customer_id)
+REFERENCES customer (customer_id)); 
+
+CREATE SEQUENCE S1 START WITH 800001;
+
+insert into customer values(S1.NEXTVAL,'RAMESH', 'CHANDRA','SHARMA','DELHI','9543198345','GOVERNMENT EMPLOYEE','06-DEC-1976');
+insert into customer values(S1.NEXTVAL,'AVINASH','SUNDER','SINGH','AMRITSAR','9876532109','PRIVATE EMPLOYEE','16-OCT-1974');
+insert into customer values(S1.NEXTVAL,'RAHUL',NULL,'RASTOGI','MUMBAI','9765178901','STUDENT','26-OCT-1998');
+insert into customer values(S1.NEXTVAL,'PARUL',NULL,'YADAV','BENGALURU','9876532109','HOUSEWIFE','03-NOV-1976');
+insert into customer values(S1.NEXTVAL,'NAVEEN','CHANDRA','KUMAR','VISAKHAPATNAM','8976523190','BUSINESS','19-SEP-1976');
+insert into customer values(S1.NEXTVAL,'CHITRESH',NULL,'KUMAR','HYDERABAD','7651298321','STUDENT','06-NOV-1992');
+insert into customer values(S1.NEXTVAL,'AMIT','KUMAR','AGARWAL','BHOPAL','9875189761','STUDENT','06-SEP-1996');
+insert into customer values(S1.NEXTVAL,'NISHA',NULL,'SHARMA','HYDERABAD','7954198761','PRIVATE EMPLOYEE','03-DEC-1975');
+insert into customer values(S1.NEXTVAL,'ABHISHEK',NULL,'DUTTA','VISAKHAPATNAM','9856198761','GOVERNMENT EMPLOYEE','22-MAY-1973');
+insert into customer values(S1.NEXTVAL,'SHANKAR',NULL,'NAIR','CHENNAI','8765489076','BUSINESS','12-JUL-1976');
+insert into customer values(S1.NEXTVAL,'SRINIVAS',NULL,'MURTHY','HYDERABAD','8500204179','PRIVATE EMPLOYEE','04-SEP-1998');
+insert into customer values(S1.NEXTVAL,'JIBIN',NULL,'ABRAHAM','COCHIN','8765445027','BUSINESS','22-JUL-1978');
+insert into customer values(S1.NEXTVAL,'NIRUPAMA','KIRAN','ROUT','BHUBANESHWAR','9848689076','HOUSE WIFE','12-SEP-1989');
+insert into customer values(S1.NEXTVAL,'SAI','KUMAR','TIRUMALASETTY','BENGALURU','8325759610','GOVERNMENT EMPLOYEE','18-JAN-1996');
+insert into customer values(S1.NEXTVAL,'NAVYA',NULL,'THATIKONDA','VIJAYAWADA','9985201424','STUDENT','30-DEC-1998');
+insert into customer values(S1.NEXTVAL,'PAVAN','SAI','MADDULA','VISAKHAPATNAM','7285698230','STUDENT','12-JUL-1999');
+insert into customer values(S1.NEXTVAL,'SHALINI',NULL,'PATHAK','KOLKATA','8565489088','HOUSE WIFE','19-FEB-1976');
+insert into customer values(S1.NEXTVAL,'PRATAP','KUMAR','SINGH','PATNA','7989562410','GOVERNMENT EMPLOYEE','16-JUL-1992');
+insert into customer values(S1.NEXTVAL,'MANI',NULL,'MALA','DELHI','8520369456','GOVERNMENT EMPLOYEE','12-AUG-1995');
+insert into customer values(S1.NEXTVAL,'DIVYANSHU',NULL,'CHITRANSHI','DELHI','8632105892','PRIVATE EMPLOYEE','12-JUL-1972');
+insert into customer values(S1.NEXTVAL,'KARTHICK',NULL,'E','CHENNAI','8321569815','BUSINESS','12-JUL-1976');
+insert into customer values(S1.NEXTVAL,'RAKESH','RATAN','KUMAR','MUMBAI','9622158036','STUDENT','28-OCT-1998');
+insert into customer values(S1.NEXTVAL,'MEGHANA',NULL,'CHOWDARY','VIJAYAWADA','8974562780','HOUSE WIFE','12-JUL-1977');
+insert into customer values(S1.NEXTVAL,'KARAN',NULL,'SINGH','AMRITSAR','8321058763','BUSINESS','02-JAN-1985');
+insert into customer values(S1.NEXTVAL,'SAKSHI','SANTHOSH','ROUT','BHUBANESHWAR','8324448763','HOUSE WIFE','04-NOV-1998');
+COMMIT;
+
+CREATE SEQUENCE S2 START WITH 4001;
+
+insert into branch values(S2.NEXTVAL,'BEGUMPET','HYDERABAD');
+insert into branch values(S2.NEXTVAL,'NEW DELHI MAIN BRANCH','DELHI');
+insert into branch values(S2.NEXTVAL,'WHITE FIELD','BENGALURU');
+insert into branch values(S2.NEXTVAL,'SIRUSERI','CHENNAI');
+insert into branch values(S2.NEXTVAL,'BANDRA','MUMBAI');
+insert into branch values(S2.NEXTVAL,'SR NAGAR','HYDERABAD');
+insert into branch values(S2.NEXTVAL,'GAJUWAKA','VISAKHAPATNAM');
+insert into branch values(S2.NEXTVAL,'TAGORE PARK','KOLKATA');
+insert into branch values(S2.NEXTVAL,'ANNA NAGAR','CHENNAI');
+COMMIT;
+
+CREATE SEQUENCE S3 START WITH 10000001;
+
+insert into account values(S3.NEXTVAL,800001,4002,1000,'15-DEC-2012','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800002,4002,2000,'12-JUN-2012','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800003,4005,4000,'17-MAY-2012','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800004,4003,1000,'27-JAN-2013','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800005,4007,5000,'17-DEC-2012','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800006,4001,1000,'12-AUG-2010','SAVING','SUSPENDED');
+insert into account values(S3.NEXTVAL,800007,4008,2000,'02-OCT-2012','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800008,4006,1000,'09-NOV-2009','SAVING','TERMINATED');
+insert into account values(S3.NEXTVAL,800009,4007,2000,'30-NOV-2008','SAVING','TERMINATED');
+insert into account values(S3.NEXTVAL,800010,4009,5000,'01-MAR-2013','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800011,4006,4000,'05-MAR-2011','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800012,4009,3000,'07-APR-2013','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800013,4001,1000,'11-MAY-2011','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800014,4003,3000,'17-NOV-2013','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800015,4006,2000,'20-SEP-2009','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800016,4007,5000,'08-MAY-2012','SAVING','SUSPENDED');
+insert into account values(S3.NEXTVAL,800017,4008,1000,'24-OCT-2011','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800018,4006,3000,'31-DEC-2013','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800019,4002,2000,'27-APR-2009','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800020,4002,4000,'14-APR-2011','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800021,4009,3000,'01-MAR-2012','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800022,4005,5000,'16-NOV-2010','SALARY','ACTIVE');
+insert into account values(S3.NEXTVAL,800023,4007,1000,'12-OCT-2009','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800024,4003,2000,'12-JAN-2012','SAVING','ACTIVE');
+insert into account values(S3.NEXTVAL,800025,4003,4000,'15-JUN-2010','SALARY','ACTIVE');
+COMMIT;
+
+CREATE SEQUENCE S4 START WITH 50000001;
+
+insert into transaction_details values(S4.NEXTVAL,10000001,'01-JAN-2013','CHEQUE','DEPOSIT',2000);
+insert into transaction_details values(S4.NEXTVAL,10000011,'01-FEB-2013','CASH','WITHDRAWAL',1000);
+insert into transaction_details values(S4.NEXTVAL,10000002,'01-JAN-2013','CASH','DEPOSIT',2000);
+insert into transaction_details values(S4.NEXTVAL,10000013,'01-FEB-2013','CASH','DEPOSIT',3000);
+insert into transaction_details values(S4.NEXTVAL,10000022,'11-JAN-2013','CASH','DEPOSIT',7000);
+insert into transaction_details values(S4.NEXTVAL,10000007,'13-JAN-2013','CASH','DEPOSIT',9000);
+insert into transaction_details values(S4.NEXTVAL,10000021,'13-MAR-2013','CASH','DEPOSIT',4000);
+insert into transaction_details values(S4.NEXTVAL,10000014,'14-MAR-2013','CHEQUE','DEPOSIT',3000);
+insert into transaction_details values(S4.NEXTVAL,10000008,'21-MAR-2013','CASH','WITHDRAWAL',9000);
+insert into transaction_details values(S4.NEXTVAL,10000002,'22-MAR-2013','CASH','WITHDRAWAL',2000);
+insert into transaction_details values(S4.NEXTVAL,10000004,'25-MAR-2013','CASH','WITHDRAWAL',7000);
+insert into transaction_details values(S4.NEXTVAL,10000017,'26-MAR-2013','CASH','WITHDRAWAL',2000);
+insert into transaction_details values(S4.NEXTVAL,10000016,'25-APR-2013','CASH','DEPOSIT',5000);
+insert into transaction_details values(S4.NEXTVAL,10000012,'28-APR-2013','CASH','DEPOSIT',6000);
+insert into transaction_details values(S4.NEXTVAL,10000004,'28-APR-2013','CASH','DEPOSIT',2000);
+insert into transaction_details values(S4.NEXTVAL,10000006,'30-APR-2013','CHEQUE','DEPOSIT',7000);
+insert into transaction_details values(S4.NEXTVAL,10000010,'30-APR-2013','CHEQUE','WITHDRAWAL',10000);
+insert into transaction_details values(S4.NEXTVAL,10000007,'30-APR-2013','CASH','DEPOSIT',3000);
+insert into transaction_details values(S4.NEXTVAL,10000022,'30-APR-2013','CASH','WITHDRAWAL',4000);
+insert into transaction_details values(S4.NEXTVAL,10000004,'04-MAY-2013','CASH','DEPOSIT',1000);
+insert into transaction_details values(S4.NEXTVAL,10000008,'10-MAY-2013','CHEQUE','DEPOSIT',5000);
+insert into transaction_details values(S4.NEXTVAL,10000015,'10-MAY-2013','CASH','WITHDRAWAL',2000);
+COMMIT;
+
+insert into Loan_details values(800001,4001,500000);
+insert into Loan_details values(800002,4002,200000);
+insert into Loan_details values(800005,4005,400000);
+insert into Loan_details values(800006,4006,500000);
+insert into Loan_details values(800007,4007,600000);
+insert into Loan_details values(800009,4009,800000);
+insert into Loan_details values(800011,4006,1000000);
+insert into Loan_details values(800015,4006,600000);
+insert into Loan_details values(800019,4002,900000);
+insert into Loan_details values(800022,4005,200000);
+COMMIT;
+
+CREATE SEQUENCE S5 START WITH 40000001;
+
+insert into atm_card_details values(S5.NEXTVAL,'15-DEC-2022',125,10000001);
+insert into atm_card_details values(S5.NEXTVAL,'12-JUN-2022',629,10000002);
+insert into atm_card_details values(S5.NEXTVAL,'17-MAY-2022',235,10000003);
+insert into atm_card_details values(S5.NEXTVAL,'27-JAN-2023',909,10000004);
+insert into atm_card_details values(S5.NEXTVAL,'17-DEC-2022',198,10000005);
+insert into atm_card_details values(S5.NEXTVAL,'12-AUG-2020',444,10000006);
+insert into atm_card_details values(S5.NEXTVAL,'02-OCT-2022',507,10000007);
+insert into atm_card_details values(S5.NEXTVAL,'09-NOV-2019',667,10000008);
+insert into atm_card_details values(S5.NEXTVAL,'30-NOV-2018',201,10000009);
+insert into atm_card_details values(S5.NEXTVAL,'01-MAR-2023',499,10000010);
+insert into atm_card_details values(S5.NEXTVAL,'05-MAR-2021',996,10000011);
+insert into atm_card_details values(S5.NEXTVAL,'07-APR-2023',567,10000012);
+insert into atm_card_details values(S5.NEXTVAL,'11-MAY-2021',668,10000013);
+insert into atm_card_details values(S5.NEXTVAL,'17-NOV-2023',199,10000014);
+insert into atm_card_details values(S5.NEXTVAL,'20-SEP-2019',888,10000015);
+insert into atm_card_details values(S5.NEXTVAL,'08-MAY-2022',226,10000016);
+insert into atm_card_details values(S5.NEXTVAL,'24-OCT-2021',455,10000017);
+insert into atm_card_details values(S5.NEXTVAL,'31-DEC-2023',602,10000018);
+insert into atm_card_details values(S5.NEXTVAL,'30-APR-2019',408,10000019);
+insert into atm_card_details values(S5.NEXTVAL,'14-APR-2021',788,10000020);
+insert into atm_card_details values(S5.NEXTVAL,'01-MAR-2022',971,10000021);
+insert into atm_card_details values(S5.NEXTVAL,'16-NOV-2020',722,10000022);
+insert into atm_card_details values(S5.NEXTVAL,'12-OCT-2019',606,10000023);
+insert into atm_card_details values(S5.NEXTVAL,'12-JAN-2022',855,10000024);
+insert into atm_card_details values(S5.NEXTVAL,'15-JUN-2020',556,10000025);
+COMMIT;
+
+CREATE SEQUENCE S6 START WITH 60001;
+insert into internet_banking values(S6.NEXTVAL,1234,800001,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,2212,800002,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,9856,800003,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,5555,800004,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,6626,800005,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,2054,800006,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,1285,800007,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,5569,800008,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,6645,800009,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,1012,800010,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,1122,800011,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,4444,800012,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,5656,800013,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,9999,800014,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,8520,800015,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,7412,800016,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,3698,800017,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,2156,800018,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,8962,800019,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,1202,800020,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,1111,800021,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,3421,800022,'SALARY');
+insert into internet_banking values(S6.NEXTVAL,4321,800023,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,1234,800024,'SAVING');
+insert into internet_banking values(S6.NEXTVAL,4325,800025,'SALARY');
+COMMIT;
